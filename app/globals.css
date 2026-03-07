@@ -1,26 +1,125 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body{
+margin:0;
+font-family:Arial;
 }
+/* RESET BASICO */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
+body{
+  margin:0;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* NAVBAR */
+
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#000;
+  color:white;
+  padding:15px 40px;
+}
+
+.logo{
+  background-image: url('/Imagenes/logo.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  width: 120px;
+  height: 130px;
+}
+
+.menu{
+  display:flex;
+  gap:20px;
+  list-style:none;
+  align-items:center;
+}
+
+.menu li{
+  cursor:pointer;
+}
+
+/* DROPDOWN */
+
+.dropdown{
+  position:relative;
+}
+
+.dropdown button{
+  background:none;
+  border:none;
+  color:white;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.dropdownMenu{
+  position:absolute;
+  top:35px;
+  left:0;
+  background:white;
+  color:black;
+  list-style:none;
+  padding:10px;
+  border-radius:6px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+.dropdownMenu li{
+  padding:5px 10px;
+}
+
+/* HERO */
+
+.hero{
+  height:70vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  background:#f4f4f4;
+}
+
+.hero h1{
+  font-size:90px;
+}
+
+.hero p{
+  margin-top:19px;
+  font-size:30px;
+}
+
+/* SECCIONES */
+
+.predicaciones{
+  padding:60px;
+  text-align:center;
+}
+
+.noticias{
+  padding:60px;
+  background:#f0f0f0;
+  text-align:center;
+}
+
+.donaciones{
+  padding:60px;
+  text-align:center;
+}
+
+.donaciones ul{
+  list-style:disc;
+  margin-top:10px;
+}
+
+/* FOOTER */
+
+.footer{
+  background:#000;
+  color:white;
+  text-align:center;
+  padding:30px;
 }

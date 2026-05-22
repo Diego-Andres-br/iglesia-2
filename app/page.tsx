@@ -1,353 +1,370 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { FaWhatsapp, FaYoutube, FaFacebook, FaBars, FaTimes } from "react-icons/fa"
 import VideoLlamadas from "./components/VideoLlamadas"
 
+/* ─── tiny hook: is element in viewport ─── */
+function useInView(threshold = 0.15) {
+  const ref = useRef<HTMLElement>(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true) }, { threshold })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [threshold])
+  return { ref, inView }
+}
+
+/* ─── reusable animated section ─── */
+function Section({ id, children, className }: { id?: string; children: React.ReactNode; className?: string }) {
+  const { ref, inView } = useInView()
+  return (
+    <section
+      id={id}
+      ref={ref as any}
+      className={`revealSection ${inView ? "revealed" : ""} ${className ?? ""}`}
+    >
+      {children}
+    </section>
+  )
+}
+
 export default function Home() {
-  const [menuAbierto, setMenuAbierto] = useState(false)
-  const [seccionActiva, setSeccionActiva] = useState<string | null>(null)
+  const [scrolled, setScrolled]       = useState(false)
+  const [menuOpen, setMenuOpen]       = useState(false)
+  const [dropdown, setDropdown]       = useState(false)
+  const [expanded, setExpanded]       = useState<string | null>(null)
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 70)
+    window.addEventListener("scroll", fn)
+    return () => window.removeEventListener("scroll", fn)
+  }, [])
+
+  const close = () => { setMenuOpen(false); setDropdown(false) }
+  const toggle = (key: string) => setExpanded(p => p === key ? null : key)
 
   return (
-    <main>
+    <main className="siteMain">
 
-      {/* ── NAVBAR ── */}
-      <nav className="navbar">
-        <h1 className="logo">
-          <img src="/imagenes/logo3.png" alt="Iglesia de Dios — Jesucristo Es El Señor" />
-        </h1>
+      {/* ══ NAVBAR ══════════════════════════════════════════ */}
+      <nav className={`nav ${scrolled ? "navSolid" : ""}`}>
+        <a href="#inicio" className="navLogo" onClick={close}>
+        <img src="/imagenes/logo3.png" alt="Iglesia de Dios" />
+        </a>
 
-        <button
-          className="menuToggle"
-          onClick={() => setMenuAbierto(!menuAbierto)}
-          aria-label="Abrir menú"
-        >
-          {menuAbierto ? <FaTimes /> : <FaBars />}
-        </button>
-
-        <ul className={`menu ${menuAbierto ? "menuOpen" : ""}`}>
-          <li onClick={() => setMenuAbierto(false)}>Inicio</li>
-
-          <li className="dropdown">
-            <span>Quiénes Somos ▾</span>
-            <ul className="dropdownMenu">
-              <li onClick={() => { setSeccionActiva("historia"); setMenuAbierto(false) }}>Historia</li>
-              <li onClick={() => { setSeccionActiva("mision"); setMenuAbierto(false) }}>Misión y Visión</li>
-              <li onClick={() => { setSeccionActiva("fe"); setMenuAbierto(false) }}>Declaración de Fe</li>
+        <ul className="navList">
+          <li><a href="#inicio"        className="nl">Inicio</a></li>
+          <li className="has-drop">
+            <button className="nl drop-btn">Quiénes Somos <span>▾</span></button>
+            <ul className="drop-menu">
+              <li><a href="#historia" className="drop-item">Historia</a></li>
+              <li><a href="#historia" className="drop-item">Misión y Visión</a></li>
+              <li><a href="#historia" className="drop-item">Declaración de Fe</a></li>
             </ul>
           </li>
-
-          <li onClick={() => setMenuAbierto(false)}>Predicaciones</li>
-          <li onClick={() => setMenuAbierto(false)}>Reuniones en Línea</li>
-          <li onClick={() => setMenuAbierto(false)}>Noticias</li>
-          <li onClick={() => setMenuAbierto(false)}>Cronograma</li>
-          <li onClick={() => setMenuAbierto(false)}>Pastores</li>
-          <li onClick={() => setMenuAbierto(false)}>Donaciones</li>
-          <li onClick={() => setMenuAbierto(false)}>Contacto</li>
+          <li><a href="#predicaciones" className="nl">Predicaciones</a></li>
+          <li><a href="#videollamadas" className="nl">En Línea</a></li>
+          <li><a href="#noticias"      className="nl">Noticias</a></li>
+          <li><a href="#donaciones"    className="nl">Donaciones</a></li>
+          <li><a href="#contacto"      className="nl">Contacto</a></li>
         </ul>
+
+        <a href="https://wa.me/573007433603" target="_blank" className="navWa">
+          <FaWhatsapp /> Contáctanos
+        </a>
+
+        <button className="navBurger" onClick={() => setMenuOpen(o => !o)} aria-label="Menú">
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </button>
       </nav>
 
-      {/* ── HERO ── */}
-      <section className="hero">
-        <div className="heroBadge">Iglesia de Dios en Colombia · Iglesia local</div>
-        <h1>Jesucristo Es El Señor</h1>
-        <p>
-          Un lugar para conocer a Dios, crecer en fe y vivir el evangelio.<br />
-          Parte de la Iglesia de Dios en Colombia, fundada en 1886.
-        </p>
-        <div className="heroButtons">
-          <a
-            href="https://meet.jit.si/IddJesucristoEsElSenor-Culto"
-            target="_blank"
-            className="btnHeroPrimary"
-          >
-            🎤 Unirse al culto en línea
-          </a>
-          <a
-            href="https://www.youtube.com/@iddjesucristoeselsenor8052"
-            target="_blank"
-            className="btnHeroSecondary"
-          >
-            ▶ Ver en YouTube
-          </a>
-        </div>
-      </section>
-
-      {/* ── QUIÉNES SOMOS ── */}
-      <section className="quienesSomos">
-        <div className="quienesGrid">
-
-          <div className="quienesCard" onClick={() => setSeccionActiva(seccionActiva === "historia" ? null : "historia")}>
-            <span className="quienesIcono">📖</span>
-            <h3>Nuestra Historia</h3>
-            <p>Desde 1886 en Tennessee, EE.UU. hasta Colombia en 1956. Una iglesia con casi 70 años de historia en Colombia.</p>
-            <span className="verMas">{seccionActiva === "historia" ? "Cerrar ↑" : "Leer más ↓"}</span>
-          </div>
-
-          <div className="quienesCard" onClick={() => setSeccionActiva(seccionActiva === "mision" ? null : "mision")}>
-            <span className="quienesIcono">🎯</span>
-            <h3>Misión y Visión</h3>
-            <p>Promovemos iglesias saludables que se multipliquen, lideradas por personas capacitadas para cumplir la Gran Comisión.</p>
-            <span className="verMas">{seccionActiva === "mision" ? "Cerrar ↑" : "Leer más ↓"}</span>
-          </div>
-
-          <div className="quienesCard" onClick={() => setSeccionActiva(seccionActiva === "fe" ? null : "fe")}>
-            <span className="quienesIcono">✝️</span>
-            <h3>Declaración de Fe</h3>
-            <p>Creemos en la Biblia como la Palabra de Dios, en la salvación por gracia mediante la fe en Jesucristo.</p>
-            <span className="verMas">{seccionActiva === "fe" ? "Cerrar ↑" : "Leer más ↓"}</span>
-          </div>
-
-        </div>
-
-        {/* Panel expandible — Historia */}
-        {seccionActiva === "historia" && (
-          <div className="expandPanel">
-            <h3>Breve historia de la Iglesia de Dios</h3>
-            <p>
-              La Iglesia de Dios comenzó el <strong>19 de agosto de 1886</strong> en el condado de Monroe, Tennessee, 
-              cuando Richard Green Spurling predicó a ocho personas que formaron una Unión Cristiana con el propósito 
-              de seguir el Nuevo Testamento como regla de fe y práctica. Veintiún años después, el movimiento adoptó 
-              formalmente el nombre de Iglesia de Dios. Hoy cuenta con más de <strong>8.6 millones de miembros en 191 naciones</strong>.
-            </p>
-            <h4>En Colombia</h4>
-            <p>
-              En <strong>1956</strong>, Ricardo Moreno inició los primeros cultos en Sogamoso, Boyacá, con su familia 
-              y un pequeño grupo. Desde allí la iglesia creció por todo el país: Bogotá, Cali, Villavicencio, 
-              Barranquilla, Medellín y muchos departamentos más. Nuestra congregación local es parte de esa historia 
-              viva del evangelio en Colombia.
-            </p>
-            <p className="versiculoPanel">
-              "Estad firmes y constantes, creciendo en la obra del Señor siempre." — 1 Corintios 15:58
-            </p>
-            <a
-              href="https://www.iglesiadedioscolombia.com/historia"
-              target="_blank"
-              className="btnPanel"
-            >
-              Ver historia completa →
-            </a>
-          </div>
-        )}
-
-        {/* Panel expandible — Misión */}
-        {seccionActiva === "mision" && (
-          <div className="expandPanel">
-            <h3>Nuestra Misión</h3>
-            <p>
-              Somos una comunidad de creyentes dedicados a seguir los mandamientos de Dios y a difundir su mensaje 
-              de amor y esperanza. Estamos comprometidos en <strong>equipar, empoderar y facilitar</strong> el trabajo 
-              de la iglesia local para el cumplimiento de la Gran Comisión.
-            </p>
-            <h3>Nuestra Visión</h3>
-            <p>
-              Promover iglesias saludables que se multipliquen, lideradas por individuos altamente capacitados, 
-              creativos, innovadores y comprometidos con la extensión del Reino de Dios en cada rincón de Colombia.
-            </p>
-            <p className="versiculoPanel">
-              "Id y haced discípulos a todas las naciones." — Mateo 28:19
-            </p>
-            <a
-              href="https://www.iglesiadedioscolombia.com/misión-y-visión"
-              target="_blank"
-              className="btnPanel"
-            >
-              Ver en iglesia nacional →
-            </a>
-          </div>
-        )}
-
-        {/* Panel expandible — Fe */}
-        {seccionActiva === "fe" && (
-          <div className="expandPanel">
-            <h3>Declaración de Fe</h3>
-            <p>
-              La fe y práctica de la Iglesia de Dios están fundamentadas en las Escrituras. Creemos en:
-            </p>
-            <ul className="feList">
-              <li>✝️ La Biblia como la Palabra inspirada e infalible de Dios</li>
-              <li>✝️ Un solo Dios eternamente existente en tres personas: Padre, Hijo y Espíritu Santo</li>
-              <li>✝️ La salvación por gracia mediante la fe en Jesucristo</li>
-              <li>✝️ El bautismo en agua y el bautismo del Espíritu Santo</li>
-              <li>✝️ La sanidad divina y la segunda venida de Cristo</li>
-              <li>✝️ La resurrección de los muertos y el juicio eterno</li>
-            </ul>
-            <a
-              href="https://www.iglesiadedioscolombia.com/declaración-de-fe"
-              target="_blank"
-              className="btnPanel"
-            >
-              Ver declaración completa →
-            </a>
-          </div>
-        )}
-      </section>
-
-      {/* ── PREDICACIONES ── */}
-      <section className="predicaciones">
-        <h2>Últimas Predicaciones</h2>
-        <p className="seccionSubtitulo">Alimenta tu espíritu con la Palabra de Dios</p>
-
-        <div className="videosGrid">
-          <iframe
-            src="https://www.youtube.com/embed/8LgxPAgHKac"
-            title="Predicación 1"
-            frameBorder="0"
-            allowFullScreen
-          />
-          <iframe
-            src="https://www.youtube.com/embed/6uUWwil9p7c"
-            title="Predicación 2"
-            frameBorder="0"
-            allowFullScreen
-          />
-          <iframe
-            src="https://www.youtube.com/embed/ZHgec5molL8"
-            title="Predicación 3"
-            frameBorder="0"
-            allowFullScreen
-          />
-        </div>
-
-        <a
-          href="https://www.youtube.com/@iddjesucristoeselsenor8052"
-          target="_blank"
-          className="btnYoutube"
-        >
-          Ver más predicaciones en YouTube
+      {/* Mobile drawer */}
+      {menuOpen && <div className="mOverlay" onClick={close} />}
+      <aside className={`mDrawer ${menuOpen ? "mOpen" : ""}`}>
+        <ul className="mList">
+          {[
+            ["#inicio",        "Inicio"],
+            ["#historia",      "Historia"],
+            ["#predicaciones", "Predicaciones"],
+            ["#videollamadas", "Reuniones en línea"],
+            ["#noticias",      "Noticias"],
+            ["#donaciones",    "Donaciones"],
+            ["#contacto",      "Contacto"],
+          ].map(([href, label]) => (
+            <li key={href}><a href={href} className="mLink" onClick={close}>{label}</a></li>
+          ))}
+        </ul>
+        <a href="https://wa.me/573007433603" target="_blank" className="mWa" onClick={close}>
+          <FaWhatsapp /> Escríbenos por WhatsApp
         </a>
-      </section>
+      </aside>
 
-      {/* ── VIDEO LLAMADAS ── */}
-      <VideoLlamadas />
-
-      {/* ── NOTICIAS ── */}
-      <section className="noticias">
-        <h2>Noticias y Eventos</h2>
-        <p className="seccionSubtitulo">Mantente al día con lo que Dios está haciendo en nuestra congregación</p>
-        <div className="noticiasGrid">
-          <div className="noticiaCard">
-            <span className="noticiaFecha">Cada domingo</span>
-            <h3>Culto general</h3>
-            <p>Nos reunimos en persona y en línea cada domingo. ¡Conéctate desde donde estés y sé parte del culto!</p>
-          </div>
-          <div className="noticiaCard">
-            <span className="noticiaFecha">Miércoles y viernes</span>
-            <h3>Estudio bíblico</h3>
-            <p>Profundiza en la Palabra cada miércoles y viernes a las 7pm, presencial y por videollamada.</p>
-          </div>
-          <div className="noticiaCard">
-            <span className="noticiaFecha">Próximamente</span>
-            <h3>Eventos especiales</h3>
-            <p>Campañas, retiros y conferencias. Siguenos en redes sociales para no perderte ningún evento.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── DONACIONES ── */}
-      <section className="donaciones">
-        <h2>Apoya el Ministerio</h2>
-        <p className="seccionSubtitulo">Tu ofrenda hace posible seguir predicando el evangelio en Colombia</p>
-        <div className="donacionesGrid">
-          <div className="donacionCard">
-            <span className="donacionIcono">📱</span>
-            <h3>Nequi</h3>
-            <p>Envía tu ofrenda de forma rápida y segura desde tu celular</p>
-          </div>
-          <div className="donacionCard">
-            <span className="donacionIcono">🏦</span>
-            <h3>Bancolombia</h3>
-            <p>Transferencia bancaria directa al ministerio de la iglesia</p>
-          </div>
-          <div className="donacionCard">
-            <span className="donacionIcono">💳</span>
-            <h3>Transferencia</h3>
-            <p>Otras entidades bancarias disponibles para tu comodidad</p>
-          </div>
-        </div>
-        <p className="donacionContacto">
-          Para información de cuentas escríbenos al{" "}
-          <a href="https://wa.me/573007433603" target="_blank">
-            WhatsApp 300 743 3603
-          </a>
-        </p>
-      </section>
-
-      {/* ── IGLESIA NACIONAL ── */}
-      <section className="iglesiaNacional">
-        <div className="iglesiaNacionalContenido">
-          <span className="iglesiaNacionalBadge">Somos parte de</span>
-          <h2>Iglesia de Dios en Colombia</h2>
-          <p>
-            Nuestra congregación es una iglesia local afiliada a la Iglesia de Dios en Colombia, 
-            con sede nacional en Bogotá. Una red de más de 60 años predicando el evangelio 
-            en casi todos los departamentos del país.
+      {/* ══ HERO ═══════════════════════════════════════════ */}
+      <section className="hero" id="inicio">
+        <div className="heroOverlay" />
+        <div className="heroContent">
+          <span className="heroPill">Iglesia de Dios en Colombia · Iglesia local</span>
+          <h1 className="heroTitle">
+            Jesucristo<br /><em>Es El Señor</em>
+          </h1>
+          <p className="heroSub">
+            Un lugar para conocer a Dios, crecer en fe y vivir el evangelio.<br />
+            Parte de la Iglesia de Dios en Colombia, fundada en 1886.
           </p>
-          <a
-            href="https://www.iglesiadedioscolombia.com"
-            target="_blank"
-            className="btnIglesiaNacional"
-          >
+          <div className="heroCtas">
+            <a href="https://meet.jit.si/IddJesucristoEsElSenor-Culto" target="_blank" className="ctaPrimary">
+              🎤 Unirse al culto en línea
+            </a>
+            <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank" className="ctaSecondary">
+              ▶ Ver en YouTube
+            </a>
+          </div>
+        </div>
+        <div className="heroScroll">↓</div>
+      </section>
+
+      {/* ══ QUIÉNES SOMOS ══════════════════════════════════ */}
+      <Section id="historia" className="secQuienes">
+        <div className="container">
+          <div className="secHeader">
+            <span className="secTag">Quiénes somos</span>
+            <h2 className="secTitle">Una comunidad con raíces profundas</h2>
+            <p className="secDesc">Somos parte de la Iglesia de Dios, un movimiento global con más de 138 años predicando el evangelio.</p>
+          </div>
+
+          {/* 3 columnas iguales */}
+          <div className="col3">
+            {[
+              { key: "historia", icon: "📖", title: "Nuestra Historia",
+                preview: "Desde 1886 en Tennessee hasta Colombia en 1956. Una iglesia con casi 70 años de presencia en el país.",
+                content: <>
+                  <p>La Iglesia de Dios comenzó el <strong>19 de agosto de 1886</strong> en el condado de Monroe, Tennessee, cuando Richard Green Spurling predicó a ocho personas. Hoy cuenta con más de <strong>8.6 millones de miembros en 191 naciones</strong>.</p>
+                  <p style={{marginTop:12}}>En <strong>1956</strong>, Ricardo Moreno inició los primeros cultos en Sogamoso, Boyacá. Desde allí la iglesia creció por todo Colombia. Nuestra congregación es parte de esa historia viva.</p>
+                  <p className="quotePanel">"Estad firmes y constantes, creciendo en la obra del Señor siempre." — 1 Cor 15:58</p>
+                  <a href="https://www.iglesiadedioscolombia.com/historia" target="_blank" className="panelBtn">Ver historia completa →</a>
+                </> },
+              { key: "mision", icon: "🎯", title: "Misión y Visión",
+                preview: "Equipar, empoderar y facilitar el trabajo de la iglesia local para cumplir la Gran Comisión.",
+                content: <>
+                  <p><strong>Misión:</strong> Somos una comunidad de creyentes dedicados a seguir los mandamientos de Dios y a difundir su mensaje de amor y esperanza.</p>
+                  <p style={{marginTop:12}}><strong>Visión:</strong> Promover iglesias saludables que se multipliquen, lideradas por individuos capacitados y comprometidos con la extensión del Reino de Dios.</p>
+                  <p className="quotePanel">"Id y haced discípulos a todas las naciones." — Mateo 28:19</p>
+                  <a href="https://www.iglesiadedioscolombia.com/misión-y-visión" target="_blank" className="panelBtn">Ver más →</a>
+                </> },
+              { key: "fe", icon: "✝️", title: "Declaración de Fe",
+                preview: "Creemos en la Biblia como Palabra de Dios y en la salvación por gracia mediante la fe en Jesucristo.",
+                content: <>
+                  <ul className="feUl">
+                    {["La Biblia como Palabra inspirada e infalible de Dios","Un solo Dios en tres personas: Padre, Hijo y Espíritu Santo","La salvación por gracia mediante la fe en Jesucristo","El bautismo en agua y el bautismo del Espíritu Santo","La sanidad divina y la segunda venida de Cristo","La resurrección de los muertos y el juicio eterno"].map(f => (
+                      <li key={f}>✝️ {f}</li>
+                    ))}
+                  </ul>
+                  <a href="https://www.iglesiadedioscolombia.com/declaración-de-fe" target="_blank" className="panelBtn">Ver declaración completa →</a>
+                </> },
+            ].map(({ key, icon, title, preview, content }) => (
+              <div key={key} className={`quCard ${expanded === key ? "quCardOpen" : ""}`}>
+                <div className="quCardHead" onClick={() => toggle(key)}>
+                  <span className="quIcon">{icon}</span>
+                  <div>
+                    <h3 className="quTitle">{title}</h3>
+                    <p className="quPreview">{preview}</p>
+                  </div>
+                  <span className="quChev">{expanded === key ? "▲" : "▼"}</span>
+                </div>
+                {expanded === key && <div className="quBody">{content}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* ══ PREDICACIONES ══════════════════════════════════ */}
+      <Section id="predicaciones" className="secDark">
+        <div className="container">
+          <div className="secHeader light">
+            <span className="secTag light">YouTube</span>
+            <h2 className="secTitle light">Últimas Predicaciones</h2>
+            <p className="secDesc light">Alimenta tu espíritu con la Palabra de Dios</p>
+          </div>
+
+          {/* 3 columnas de videos */}
+          <div className="col3 videoGrid">
+            {[
+              ["https://www.youtube.com/embed/8LgxPAgHKac", "Predicación 1"],
+              ["https://www.youtube.com/embed/6uUWwil9p7c", "Predicación 2"],
+              ["https://www.youtube.com/embed/ZHgec5molL8", "Predicación 3"],
+            ].map(([src, title]) => (
+              <div key={src} className="videoCard">
+                <iframe src={src} title={title} frameBorder="0" allowFullScreen />
+              </div>
+            ))}
+          </div>
+
+          <div className="centerAction">
+            <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank" className="btnYt">
+              <FaYoutube style={{marginRight:8}} /> Ver más predicaciones en YouTube
+            </a>
+          </div>
+        </div>
+      </Section>
+
+      {/* ══ VIDEO LLAMADAS ══════════════════════════════════ */}
+      <section id="videollamadas">
+        <VideoLlamadas />
+      </section>
+
+      {/* ══ NOTICIAS ════════════════════════════════════════ */}
+      <Section id="noticias" className="secLight">
+        <div className="container">
+          <div className="secHeader">
+            <span className="secTag">Comunidad</span>
+            <h2 className="secTitle">Noticias y Eventos</h2>
+            <p className="secDesc">Mantente al día con lo que Dios está haciendo en nuestra congregación</p>
+          </div>
+
+          {/* 3 columnas noticias */}
+          <div className="col3">
+            {[
+              { fecha: "Cada domingo",      titulo: "Culto General",    texto: "Nos reunimos en persona y en línea. ¡Conéctate desde donde estés y sé parte del culto!" },
+              { fecha: "Mié y Vie 7pm",    titulo: "Estudio Bíblico",  texto: "Profundiza en la Palabra de Dios. Disponible presencial y por videollamada." },
+              { fecha: "Próximamente",      titulo: "Eventos Especiales",texto: "Campañas, retiros y conferencias. Síguenos en redes para no perderte nada." },
+            ].map(({ fecha, titulo, texto }) => (
+              <article key={titulo} className="newsCard">
+                <span className="newsBadge">{fecha}</span>
+                <h3 className="newsTitle">{titulo}</h3>
+                <p className="newsText">{texto}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* ══ DONACIONES ══════════════════════════════════════ */}
+      <Section id="donaciones" className="secDonaciones">
+        <div className="container">
+          <div className="secHeader light">
+            <span className="secTag light">Ofrenda</span>
+            <h2 className="secTitle light">Apoya el Ministerio</h2>
+            <p className="secDesc light">Tu ofrenda hace posible seguir predicando el evangelio en Colombia</p>
+          </div>
+
+          {/* 3 columnas donaciones */}
+          <div className="col3">
+            {[
+              { icon: "📱", method: "Nequi",        desc: "Envía tu ofrenda rápido y seguro desde tu celular" },
+              { icon: "🏦", method: "Bancolombia",   desc: "Transferencia bancaria directa al ministerio" },
+              { icon: "💳", method: "Transferencia", desc: "Disponible en otras entidades bancarias" },
+            ].map(({ icon, method, desc }) => (
+              <div key={method} className="donCard">
+                <span className="donIcon">{icon}</span>
+                <h3 className="donMethod">{method}</h3>
+                <p className="donDesc">{desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="centerAction" style={{marginTop: 36}}>
+            <a href="https://wa.me/573007433603" target="_blank" className="donCta">
+              <FaWhatsapp style={{marginRight:8}} /> Solicitar datos de pago
+            </a>
+          </div>
+        </div>
+      </Section>
+
+      {/* ══ BANNER IGLESIA NACIONAL ═════════════════════════ */}
+      <Section className="secBanner">
+        <div className="container bannerInner">
+          <div className="bannerText">
+            <span className="secTag light">Red nacional</span>
+            <h2 className="secTitle light" style={{marginBottom:12}}>Iglesia de Dios en Colombia</h2>
+            <p className="secDesc light">Nuestra congregación es afiliada a la Iglesia de Dios en Colombia, con sede en Bogotá. Una red de más de 60 años predicando el evangelio en casi todos los departamentos del país.</p>
+          </div>
+          <a href="https://www.iglesiadedioscolombia.com" target="_blank" className="bannerBtn">
             Visitar iglesia nacional →
           </a>
         </div>
-      </section>
+      </Section>
 
-      {/* ── MAPA ── */}
-      <section className="mapa">
-        <h2>Nuestra Ubicación</h2>
-        <p className="seccionSubtitulo">Visítanos — siempre habrá un lugar para ti</p>
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!3m2!1ses-419!2sco!4v1772979549784!5m2!1ses-419!2sco!6m8!1m7!1sOSyhx5pbeT1BovkZFcmgOQ!2m2!1d10.42179798811393!2d-75.52057116700773!3f259.18429680034194!4f-7.8357033013896995!5f0.7820865974627469"
-          width="100%"
-          height="450"
-          style={{ border: 0, borderRadius: "16px" }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="footer">
-        <img src="/imagenes/logo3.png" alt="Logo" className="footerLogo" />
-        <p className="footerNombre">Iglesia de Dios — Jesucristo Es El Señor</p>
-        <p className="footerAfiliacion">
-          Afiliada a la{" "}
-          <a href="https://www.iglesiadedioscolombia.com" target="_blank">
-            Iglesia de Dios en Colombia
-          </a>
-          {" "}· Fundada en 1886
-        </p>
-        <p className="footerVerse">
-          "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito." — Juan 3:16
-        </p>
-        <div className="footerRedes">
-          <a href="https://wa.me/573007433603" target="_blank" aria-label="WhatsApp">
-            <FaWhatsapp />
-          </a>
-          <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank" aria-label="YouTube">
-            <FaYoutube />
-          </a>
-          <a href="https://facebook.com/profile.php?id=100068228206221" target="_blank" aria-label="Facebook">
-            <FaFacebook />
-          </a>
+      {/* ══ MAPA ════════════════════════════════════════════ */}
+      <Section id="contacto" className="secMapa">
+        <div className="container">
+          <div className="secHeader">
+            <span className="secTag">Visítanos</span>
+            <h2 className="secTitle">Nuestra Ubicación</h2>
+            <p className="secDesc">Siempre habrá un lugar para ti</p>
+          </div>
+          {/* 2 columnas: info + mapa */}
+          <div className="col2 mapaGrid">
+            <div className="mapaInfo">
+              <div className="mapaDetail"><span>📍</span><div><strong>Dirección</strong><p>Cartagena, Colombia</p></div></div>
+              <div className="mapaDetail"><span>📞</span><div><strong>WhatsApp</strong><p>300 743 3603</p></div></div>
+              <div className="mapaDetail"><span>🕐</span><div><strong>Horarios</strong><p>Dom 9am · 11am · 6pm<br/>Mié y Vie 7pm</p></div></div>
+              <div className="mapaDetail"><span>📺</span><div><strong>En línea</strong><p>YouTube · Jitsi Meet</p></div></div>
+              <div className="mapaSocial">
+                <a href="https://wa.me/573007433603" target="_blank" aria-label="WhatsApp"><FaWhatsapp /></a>
+                <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank" aria-label="YouTube"><FaYoutube /></a>
+                <a href="https://facebook.com/profile.php?id=100068228206221" target="_blank" aria-label="Facebook"><FaFacebook /></a>
+              </div>
+            </div>
+            <div className="mapaFrame">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!3m2!1ses-419!2sco!4v1772979549784!5m2!1ses-419!2sco!6m8!1m7!1sOSyhx5pbeT1BovkZFcmgOQ!2m2!1d10.42179798811393!2d-75.52057116700773!3f259.18429680034194!4f-7.8357033013896995!5f0.7820865974627469"
+                width="100%" height="100%" style={{ border: 0 }}
+                allowFullScreen loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
         </div>
-        <p className="footerCopy">
-          © {new Date().getFullYear()} Iglesia de Dios — Jesucristo Es El Señor · Todos los derechos reservados
-        </p>
+      </Section>
+
+      {/* ══ FOOTER ══════════════════════════════════════════ */}
+      <footer className="footer">
+        <div className="container footerGrid">
+          {/* Col 1 */}
+          <div className="footerBrand">
+            <img src="/imagenes/logo3.png" alt="Logo" className="footerLogo" />
+            <p className="footerName">Iglesia de Dios<br />Jesucristo Es El Señor</p>
+            <p className="footerVerse">"Porque de tal manera amó Dios al mundo..." — Juan 3:16</p>
+          </div>
+          {/* Col 2 */}
+          <div className="footerLinks">
+            <p className="footerColTitle">Navegación</p>
+            {[["#inicio","Inicio"],["#historia","Quiénes somos"],["#predicaciones","Predicaciones"],["#videollamadas","Reuniones en línea"],["#noticias","Noticias"],["#donaciones","Donaciones"]].map(([href,label]) => (
+              <a key={href} href={href} className="footerLink">{label}</a>
+            ))}
+          </div>
+          {/* Col 3 */}
+          <div className="footerContact">
+            <p className="footerColTitle">Contacto</p>
+            <p className="footerContactItem">📱 300 743 3603</p>
+            <p className="footerContactItem">📍 Cartagena, Colombia</p>
+            <p className="footerContactItem" style={{marginTop:12,fontSize:12,color:"#555"}}>
+              Afiliada a la{" "}
+              <a href="https://www.iglesiadedioscolombia.com" target="_blank" style={{color:"#6fcf97"}}>
+                Iglesia de Dios en Colombia
+              </a>
+            </p>
+            <div className="footerSocial">
+              <a href="https://wa.me/573007433603" target="_blank"><FaWhatsapp /></a>
+              <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank"><FaYoutube /></a>
+              <a href="https://facebook.com/profile.php?id=100068228206221" target="_blank"><FaFacebook /></a>
+            </div>
+          </div>
+        </div>
+        <div className="footerBottom">
+          <p>© {new Date().getFullYear()} Iglesia de Dios — Jesucristo Es El Señor · Todos los derechos reservados</p>
+        </div>
       </footer>
 
-      {/* ── BOTONES FLOTANTES ── */}
-      <div className="floatingButtons">
-        <a href="https://wa.me/573007433603" target="_blank" aria-label="WhatsApp">
-          <FaWhatsapp className="icon whatsapp" />
-        </a>
-        <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank" aria-label="YouTube">
-          <FaYoutube className="icon youtube" />
-        </a>
-        <a href="https://facebook.com/profile.php?id=100068228206221" target="_blank" aria-label="Facebook">
-          <FaFacebook className="icon facebook" />
-        </a>
+      {/* ══ BOTONES FLOTANTES ═══════════════════════════════ */}
+      <div className="floatingBtns">
+        <a href="https://wa.me/573007433603" target="_blank" aria-label="WhatsApp" className="floatBtn wa"><FaWhatsapp /></a>
+        <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank" aria-label="YouTube" className="floatBtn yt"><FaYoutube /></a>
+        <a href="https://facebook.com/profile.php?id=100068228206221" target="_blank" aria-label="Facebook" className="floatBtn fb"><FaFacebook /></a>
       </div>
 
     </main>

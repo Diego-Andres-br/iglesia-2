@@ -68,6 +68,7 @@ export default function Navbar() {
           <li><Link href="/#predicaciones" className="nl">Predicaciones</Link></li>
           <li><Link href="/#videollamadas" className="nl">En Línea</Link></li>
           <li><Link href="/cronograma"     className="nl">Cronograma</Link></li>
+          <li><Link href="/sermones" className="nl">Sermones</Link></li>
           <li><Link href="/#noticias"      className="nl">Noticias</Link></li>
           <li><Link href="/#donaciones"    className="nl">Donaciones</Link></li>
           <li><Link href="/contacto"       className="nl">Contacto</Link></li>
@@ -125,6 +126,7 @@ export default function Navbar() {
           <li><Link href="/cronograma"     className="mLink" onClick={close}>Cronograma</Link></li>
           <li><Link href="/#noticias"      className="mLink" onClick={close}>Noticias</Link></li>
           <li><Link href="/#donaciones"    className="mLink" onClick={close}>Donaciones</Link></li>
+          <li><Link href="/sermones"    className="mLink" onClick={close}>Sermones</Link></li>
           <li><Link href="/contacto"       className="mLink" onClick={close}>Contacto</Link></li>
         </ul>
 

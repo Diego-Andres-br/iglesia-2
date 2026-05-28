@@ -7,7 +7,7 @@ export const metadata = {
 
 const pastoras = [
   {
-    nombre: "Pastora Marta Díaz",
+    nombre: "Pastora Martha Díaz",
     rol: "Pastora Principal",
     descripcion: "Con un corazón apasionado por la Palabra de Dios, la Pastora Marta Díaz lidera nuestra congregación con sabiduría, amor y dedicación. Su ministerio se enfoca en equipar a cada miembro para vivir una vida de fe auténtica y transformadora.",
     versículo: "\"Porque todo lo puedo en Cristo que me fortalece.\" — Filipenses 4:13",

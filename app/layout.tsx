@@ -1,17 +1,9 @@
 import type { Metadata } from "next"
-import "./styles/globals.css"
-import "./styles/iglesia.css"
+import "./globals.css"
 
 export const metadata: Metadata = {
   title: "Iglesia de Dios — Jesucristo Es El Señor",
-  description: "Iglesia de Dios Jesucristo Es El Señor en Cartagena, Colombia. Parte de la Iglesia de Dios en Colombia fundada en 1886. Únete a nuestros cultos presenciales y en línea.",
-  keywords: "iglesia, cartagena, colombia, jesucristo, culto, dios, cristiana",
-  openGraph: {
-    title: "Iglesia de Dios — Jesucristo Es El Señor",
-    description: "Únete a nuestra congregación en Cartagena. Cultos presenciales y en línea, gratis.",
-    locale: "es_CO",
-    type: "website",
-  },
+  description: "Iglesia de Dios Jesucristo Es El Señor en Cartagena, Colombia.",
 }
 
 export default function RootLayout({

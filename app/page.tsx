@@ -4,7 +4,6 @@ import { FaWhatsapp, FaYoutube, FaFacebook } from "react-icons/fa"
 import VideoLlamadas from "./components/VideoLlamadas"
 import Navbar from "./components/Navbar"
 
-/* ─── Hook: detecta si el elemento está en pantalla ─── */
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLElement>(null)
   const [inView, setInView] = useState(false)
@@ -21,7 +20,6 @@ function useInView(threshold = 0.15) {
   return { ref, inView }
 }
 
-/* ─── Sección animada al hacer scroll ─── */
 function Section({ id, children, className }: {
   id?: string
   children: React.ReactNode
@@ -46,7 +44,6 @@ export default function Home() {
   return (
     <main className="siteMain">
 
-      {/* ══ NAVBAR ══════════════════════════════════════════ */}
       <Navbar />
 
       {/* ══ HERO ════════════════════════════════════════════ */}
@@ -62,18 +59,10 @@ export default function Home() {
             Parte de la Iglesia de Dios en Colombia, fundada en 1886.
           </p>
           <div className="heroCtas">
-            <a
-              href="https://meet.jit.si/IddJesucristoEsElSenor-Culto"
-              target="_blank"
-              className="ctaPrimary"
-            >
+            <a href="https://meet.jit.si/IddJesucristoEsElSenor-Culto" target="_blank" className="ctaPrimary">
               🎤 Unirse al culto en línea
             </a>
-            <a
-              href="https://www.youtube.com/@iddjesucristoeselsenor8052"
-              target="_blank"
-              className="ctaSecondary"
-            >
+            <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank" className="ctaSecondary">
               ▶ Ver en YouTube
             </a>
           </div>
@@ -87,18 +76,13 @@ export default function Home() {
           <div className="secHeader">
             <span className="secTag">Quiénes somos</span>
             <h2 className="secTitle">Una comunidad con raíces profundas</h2>
-            <p className="secDesc">
-              Somos parte de la Iglesia de Dios, un movimiento global
-              con más de 138 años predicando el evangelio.
-            </p>
+            <p className="secDesc">Somos parte de la Iglesia de Dios, un movimiento global con más de 138 años predicando el evangelio.</p>
           </div>
 
           <div className="col3">
             {[
               {
-                key: "historia",
-                icon: "📖",
-                title: "Nuestra Historia",
+                key: "historia", icon: "📖", title: "Nuestra Historia",
                 preview: "Desde 1886 en Tennessee hasta Colombia en 1956. Una iglesia con casi 70 años de presencia en el país.",
                 content: (
                   <>
@@ -110,9 +94,7 @@ export default function Home() {
                 ),
               },
               {
-                key: "mision",
-                icon: "🎯",
-                title: "Misión y Visión",
+                key: "mision", icon: "🎯", title: "Misión y Visión",
                 preview: "Equipar, empoderar y facilitar el trabajo de la iglesia local para cumplir la Gran Comisión.",
                 content: (
                   <>
@@ -124,9 +106,7 @@ export default function Home() {
                 ),
               },
               {
-                key: "fe",
-                icon: "✝️",
-                title: "Declaración de Fe",
+                key: "fe", icon: "✝️", title: "Declaración de Fe",
                 preview: "Creemos en la Biblia como Palabra de Dios y en la salvación por gracia mediante la fe en Jesucristo.",
                 content: (
                   <>
@@ -171,7 +151,6 @@ export default function Home() {
             <h2 className="secTitle light">Últimas Predicaciones</h2>
             <p className="secDesc light">Alimenta tu espíritu con la Palabra de Dios</p>
           </div>
-
           <div className="col3 videoGrid">
             {[
               ["https://www.youtube.com/embed/8LgxPAgHKac", "Predicación 1"],
@@ -183,13 +162,8 @@ export default function Home() {
               </div>
             ))}
           </div>
-
           <div className="centerAction">
-            <a
-              href="https://www.youtube.com/@iddjesucristoeselsenor8052"
-              target="_blank"
-              className="btnYt"
-            >
+            <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank" className="btnYt">
               <FaYoutube style={{ marginRight: 8 }} /> Ver más predicaciones en YouTube
             </a>
           </div>
@@ -209,12 +183,11 @@ export default function Home() {
             <h2 className="secTitle">Noticias y Eventos</h2>
             <p className="secDesc">Mantente al día con lo que Dios está haciendo en nuestra congregación</p>
           </div>
-
           <div className="col3">
             {[
-              { fecha: "Cada domingo",    titulo: "Culto General",      texto: "Nos reunimos en persona y en línea. ¡Conéctate desde donde estés y sé parte del culto!" },
-              { fecha: "Mar y Jue 7pm",   titulo: "Oración y Estudio",  texto: "Profundiza en la Palabra de Dios. Disponible presencial y por videollamada." },
-              { fecha: "Próximamente",    titulo: "Eventos Especiales", texto: "Campañas, retiros y conferencias. Síguenos en redes para no perderte nada." },
+              { fecha: "Cada domingo",  titulo: "Culto General",      texto: "Nos reunimos en persona y en línea. ¡Conéctate desde donde estés y sé parte del culto!" },
+              { fecha: "Mar y Jue 7pm", titulo: "Oración y Estudio",  texto: "Profundiza en la Palabra de Dios. Disponible presencial y por videollamada." },
+              { fecha: "Próximamente",  titulo: "Eventos Especiales", texto: "Campañas, retiros y conferencias. Síguenos en redes para no perderte nada." },
             ].map(({ fecha, titulo, texto }) => (
               <article key={titulo} className="newsCard">
                 <span className="newsBadge">{fecha}</span>
@@ -226,7 +199,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ══ DONACIONES ══════════════════════════════════════ */}
+      {/* ══ DONACIONES — solo Bold ══════════════════════════ */}
       <Section id="donaciones" className="secDonaciones">
         <div className="container">
           <div className="secHeader light">
@@ -234,24 +207,21 @@ export default function Home() {
             <h2 className="secTitle light">Apoya el Ministerio</h2>
             <p className="secDesc light">Tu ofrenda hace posible seguir predicando el evangelio en Colombia</p>
           </div>
-
-          <div className="col3">
-            {[
-              { icon: "📱", method: "Nequi",        desc: "Envía tu ofrenda rápido y seguro desde tu celular" },
-              { icon: "🏦", method: "Bancolombia",   desc: "Transferencia bancaria directa al ministerio" },
-              { icon: "💳", method: "Transferencia", desc: "Disponible en otras entidades bancarias" },
-            ].map(({ icon, method, desc }) => (
-              <div key={method} className="donCard">
-                <span className="donIcon">{icon}</span>
-                <h3 className="donMethod">{method}</h3>
-                <p className="donDesc">{desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="centerAction" style={{ marginTop: 36 }}>
-            <a href="https://wa.me/573007433603" target="_blank" className="donCta">
-              <FaWhatsapp style={{ marginRight: 8 }} /> Solicitar datos de pago
+          <div className="centerAction">
+            <a
+              href="https://checkout.bold.co/payment/LNK_EMZU6WEN6T"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                background: "#fff", color: "#1b4332",
+                padding: "16px 36px", borderRadius: 12,
+                fontSize: 17, fontWeight: 700,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+                transition: "transform 0.15s",
+              }}
+            >
+              💳 Donar ahora con Bold
             </a>
           </div>
         </div>
@@ -262,14 +232,8 @@ export default function Home() {
         <div className="container bannerInner">
           <div className="bannerText">
             <span className="secTag light">Red nacional</span>
-            <h2 className="secTitle light" style={{ marginBottom: 12 }}>
-              Iglesia de Dios en Colombia
-            </h2>
-            <p className="secDesc light">
-              Nuestra congregación es afiliada a la Iglesia de Dios en Colombia,
-              con sede en Bogotá. Una red de más de 60 años predicando el evangelio
-              en casi todos los departamentos del país.
-            </p>
+            <h2 className="secTitle light" style={{ marginBottom: 12 }}>Iglesia de Dios en Colombia</h2>
+            <p className="secDesc light">Nuestra congregación es afiliada a la Iglesia de Dios en Colombia, con sede en Bogotá. Una red de más de 60 años predicando el evangelio en casi todos los departamentos del país.</p>
           </div>
           <a href="https://www.iglesiadedioscolombia.com" target="_blank" className="bannerBtn">
             Visitar iglesia nacional →
@@ -277,7 +241,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ══ MAPA / CONTACTO ═════════════════════════════════ */}
+      {/* ══ MAPA ════════════════════════════════════════════ */}
       <Section id="contacto" className="secMapa">
         <div className="container">
           <div className="secHeader">
@@ -285,7 +249,6 @@ export default function Home() {
             <h2 className="secTitle">Nuestra Ubicación</h2>
             <p className="secDesc">Siempre habrá un lugar para ti</p>
           </div>
-
           <div className="col2 mapaGrid">
             <div className="mapaInfo">
               <div className="mapaDetail">
@@ -300,11 +263,7 @@ export default function Home() {
                 <span>🕐</span>
                 <div>
                   <strong>Horarios</strong>
-                  <p>
-                    Dom · Mié · Sáb: 9:30am – 12:30pm<br />
-                    Mar · Jue: 7:00pm – 8:30pm<br />
-                    Sáb Jóvenes: 5:40pm – 7:00pm
-                  </p>
+                  <p>Dom · Mié · Sáb: 9:30am – 12:30pm<br />Mar · Jue: 7:00pm – 8:30pm<br />Sáb Jóvenes: 5:40pm – 7:00pm</p>
                 </div>
               </div>
               <div className="mapaDetail">
@@ -317,14 +276,12 @@ export default function Home() {
                 <a href="https://facebook.com/profile.php?id=100068228206221" target="_blank" aria-label="Facebook"><FaFacebook /></a>
               </div>
             </div>
-
             <div className="mapaFrame">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!3m2!1ses-419!2sco!4v1772979549784!5m2!1ses-419!2sco!6m8!1m7!1sOSyhx5pbeT1BovkZFcmgOQ!2m2!1d10.42179798811393!2d-75.52057116700773!3f259.18429680034194!4f-7.8357033013896995!5f0.7820865974627469"
                 width="100%" height="100%"
                 style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
+                allowFullScreen loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
@@ -335,35 +292,31 @@ export default function Home() {
       {/* ══ FOOTER ══════════════════════════════════════════ */}
       <footer className="footer">
         <div className="container footerGrid">
-
-          {/* Col 1 — Marca */}
           <div className="footerBrand">
             <img src="/imagenes/logo3.png" alt="Logo" className="footerLogo" />
             <p className="footerName">Iglesia de Dios<br />Jesucristo Es El Señor</p>
             <p className="footerVerse">"Porque de tal manera amó Dios al mundo..." — Juan 3:16</p>
           </div>
-
-          {/* Col 2 — Navegación */}
           <div className="footerLinks">
             <p className="footerColTitle">Navegación</p>
             {[
               ["/#inicio",        "Inicio"],
               ["/historia",       "Historia"],
               ["/pastoras",       "Pastoras"],
+              ["/sermones",       "Sermones"],
               ["/#predicaciones", "Predicaciones"],
-              ["/#videollamadas", "Reuniones en línea"],
               ["/cronograma",     "Cronograma"],
+              ["/donaciones",     "Donaciones"],
               ["/contacto",       "Contacto"],
             ].map(([href, label]) => (
               <a key={href} href={href} className="footerLink">{label}</a>
             ))}
           </div>
-
-          {/* Col 3 — Contacto */}
           <div className="footerContact">
             <p className="footerColTitle">Contacto</p>
             <p className="footerContactItem">📱 300 743 3603</p>
             <p className="footerContactItem">📍 Cartagena, Colombia</p>
+            <p className="footerContactItem">✉️ diegoaandres3@gmail.com</p>
             <p className="footerContactItem">🕐 Dom·Mié·Sáb 9:30am | Mar·Jue 7pm</p>
             <p style={{ marginTop: 12, fontSize: 12, color: "#555" }}>
               Afiliada a la{" "}
@@ -372,12 +325,11 @@ export default function Home() {
               </a>
             </p>
             <div className="footerSocial">
-              <a href="https://wa.me/573007433603" target="_blank" aria-label="WhatsApp"><FaWhatsapp /></a>
-              <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank" aria-label="YouTube"><FaYoutube /></a>
-              <a href="https://facebook.com/profile.php?id=100068228206221" target="_blank" aria-label="Facebook"><FaFacebook /></a>
+              <a href="https://wa.me/573007433603" target="_blank"><FaWhatsapp /></a>
+              <a href="https://www.youtube.com/@iddjesucristoeselsenor8052" target="_blank"><FaYoutube /></a>
+              <a href="https://facebook.com/profile.php?id=100068228206221" target="_blank"><FaFacebook /></a>
             </div>
           </div>
-
         </div>
         <div className="footerBottom">
           <p>© {new Date().getFullYear()} Iglesia de Dios — Jesucristo Es El Señor · Todos los derechos reservados</p>

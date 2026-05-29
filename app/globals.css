@@ -104,7 +104,7 @@ a    { text-decoration: none; }
   padding: 12px 40px;
 }
 .navLogo img {
-  height: 50px; width: auto;
+  height: 100px; width: auto;
   filter: invert(1) brightness(1.3);
   transition: transform 0.2s;
 }
@@ -269,23 +269,7 @@ a    { text-decoration: none; }
 /* ══════════════════════════════════════════════════════
    PREDICACIONES
    ══════════════════════════════════════════════════════ */
-.secDark {
-  padding: 100px 0;
-  background: url('/imagenes/2.jpg') center/cover no-repeat;
-  position: relative;
-}
-
-.secDark::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-}
-
-.secDark > * {
-  position: relative;
-  z-index: 1;
-}
+.secDark { padding: 100px 0; background: var(--dark2); }
 
 .videoGrid { gap: 20px; }
 .videoCard {
@@ -809,3 +793,214 @@ a    { text-decoration: none; }
   animation: fadeSlide 0.3s ease;
 }
 .sermonVacio { text-align: center; padding: 60px; color: var(--muted); font-size: 16px; }
+
+/* ══════════════════════════════════════════════════════
+   SEDES
+   ══════════════════════════════════════════════════════ */
+
+/* Visión + progreso */
+.sedesVision {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-bottom: 32px;
+}
+
+.sedesVisionTexto {}
+
+.sedesProgreso {
+  background: #f8f9fb;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 28px;
+}
+
+.sedesProgresoNumeros {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.sedesProgresoStat {
+  text-align: center;
+}
+
+.sedesProgresoVal {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--green);
+  line-height: 1;
+}
+
+.sedesProgresoLabel {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.sedesProgresoDiv {
+  font-size: 24px;
+  color: #ccc;
+}
+
+/* Barra de progreso */
+.sedesBarraFondo {
+  width: 100%;
+  height: 12px;
+  background: #e4e4e4;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.sedesBarraRelleno {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), #52b788);
+  border-radius: 6px;
+  transition: width 1s ease;
+  min-width: 8px;
+}
+
+/* Stats row */
+.sedesStats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.sedesStat {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--border);
+}
+
+.sedesStatEmoji { font-size: 20px; }
+.sedesStatVal   { font-size: 18px; font-weight: 700; color: var(--green); }
+.sedesStatLabel { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Sede activa */
+.sedeCardActiva {
+  display: grid;
+  grid-template-columns: auto 1fr 1.2fr;
+  gap: 32px;
+  align-items: start;
+  background: #fff;
+  border: 2px solid var(--green);
+  border-radius: 20px;
+  padding: 36px 32px;
+  margin-bottom: 48px;
+  box-shadow: 0 8px 32px rgba(45,106,79,0.12);
+}
+
+.sedeCardActivaIcono {
+  font-size: 56px;
+  line-height: 1;
+}
+
+.sedeCardActivaBadge {
+  display: inline-block;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+
+.sedeCardActivaNombre {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.sedeCardActivaCiudad,
+.sedeCardActivaDir,
+.sedeCardActivaPast,
+.sedeCardActivaHora {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+
+.sedeCardActivaMapa {
+  border-radius: 14px;
+  overflow: hidden;
+  min-height: 240px;
+  box-shadow: var(--shadow);
+}
+
+.sedeCardActivaMapa iframe {
+  width: 100%;
+  height: 240px;
+  display: block;
+}
+
+/* Próximas sedes */
+.sedeCardProxima {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sedeCardProxima:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.sedeCardTuCiudad {
+  border: 2px dashed var(--green);
+  background: var(--green-soft);
+}
+
+.sedeCardProximaEmoji { font-size: 36px; display: block; margin-bottom: 14px; }
+.sedeCardProximaNombre {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.sedeCardProximaCiudad { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+.sedeCardProximaBadge {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Responsive sedes */
+@media (max-width: 960px) {
+  .sedesVision { grid-template-columns: 1fr; }
+  .sedeCardActiva { grid-template-columns: auto 1fr; }
+  .sedeCardActivaMapa { grid-column: 1 / -1; }
+  .sedesStats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .sedeCardActiva { grid-template-columns: 1fr; }
+  .sedeCardActivaIcono { font-size: 40px; }
+}

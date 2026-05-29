@@ -9,7 +9,7 @@ const salas = [
     nombre:  "Culto General",
     emoji:   "🎤",
     horario: "Dom 9:30am · Mié 9:30am · Sáb 9:30am",
-    desc:    "Culto de adoración principal. Pastoras Marta Díaz y Amelia Castillo.",
+    desc:    "Culto de adoración principal. Pastoras Martha Díaz y Amelia Castillo.",
     activa:  true,
     color:   "#2d6a4f",
   },

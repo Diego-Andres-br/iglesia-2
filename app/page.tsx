@@ -293,7 +293,7 @@ export default function Home() {
       <footer className="footer">
         <div className="container footerGrid">
           <div className="footerBrand">
-            <img src="/imagenes/logo3.png" alt="Logo" className="footerLogo" />
+            <img src="/imagenes/logo.png" alt="Logo" className="footerLogo" />
             <p className="footerName">Iglesia de Dios<br />Jesucristo Es El Señor</p>
             <p className="footerVerse">"Porque de tal manera amó Dios al mundo..." — Juan 3:16</p>
           </div>

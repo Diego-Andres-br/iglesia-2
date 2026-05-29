@@ -35,7 +35,7 @@ export default function Navbar() {
       padding: "18px 40px", background: "transparent",
     }}>
       <Link href="/" className="navLogo">
-        <img src="/imagenes/logo3.png" alt="Iglesia de Dios" />
+        <img src="/imagenes/logo.png" alt="Iglesia de Dios" />
       </Link>
     </nav>
   )
@@ -46,7 +46,7 @@ export default function Navbar() {
       <nav className={`nav ${scrolled ? "navSolid" : ""}`}>
 
         <Link href="/" className="navLogo" onClick={close}>
-          <img src="/imagenes/logo3.png" alt="Iglesia de Dios — Jesucristo Es El Señor" />
+          <img src="/imagenes/logo.png" alt="Iglesia de Dios — Jesucristo Es El Señor" />
         </Link>
 
         <ul className="navList">
@@ -72,6 +72,7 @@ export default function Navbar() {
           <li><Link href="/#noticias"      className="nl">Noticias</Link></li>
           <li><Link href="/#donaciones"    className="nl">Donaciones</Link></li>
           <li><Link href="/contacto"       className="nl">Contacto</Link></li>
+          <li><Link href="/sedes" className="nl">Sedes</Link></li>
         </ul>
 
         <a
